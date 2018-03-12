@@ -14,21 +14,23 @@ class IndexList extends PureComponent {
   };
   static propTypes = {
     data: PropTypes.array,
+    onSelect: PropTypes.func,
   };
   constructor(props) {
     super(props);
     this.state = {
-      scrollY: -1,
       currentIndex: 0,
-      diff: -1,
       fixedTitle: '',
       shortcutList: props.data.map((group) => group.title.substr(0, 1)),
     }
 
+    this.diff = -1;
+    this.scrollY = -1;
     this.probeType = 3;
     this.listenScroll = true;
     this.touch = {};
     this.listHeight = [];
+    this.listGroup = [];
   }
 
   componentWillReceiveProps(nextProps) {
@@ -37,6 +39,10 @@ class IndexList extends PureComponent {
         this._calculateHeight();
       }, 20)
     }
+  }
+
+  componentDidMount() {
+    this._calculateHeight();
   }
 
   onShortcutTouchStart = (e) => {
@@ -49,6 +55,7 @@ class IndexList extends PureComponent {
   }
 
   onShortcutTouchMove = (e) => {
+    e.preventDefault();
     let firstTouch = e.touches[0];
     this.touch.y2 = firstTouch.pageY;
     let delta = (this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT | 0;
@@ -62,49 +69,67 @@ class IndexList extends PureComponent {
   }
 
   scroll = (pos) => {
-    this.setState({scrollY: pos.y}, this.handleScrollYChange(pos.y))
+    this.scrollY = pos.y;
+    console.log(this.scrollY);
+    this.handleScrollYChange(pos.y);
   }
 
   handleScrollYChange = (newY) => {
     const listHeight = this.listHeight;
 
     if (newY > 0) {
-      this.setState({currentIndex: 0});
+      this.setState({currentIndex: 0}, this.changeTitle);
       return;
     }
 
     for(let i = 0; i < listHeight.length -1; i++) {
       let height1 = listHeight[i];
-      let height2 = listHeight[2];
+      let height2 = listHeight[i + 1];
       if (-newY >= height1 && -newY < height2) {
         this.setState({
           currentIndex: i,
-          diff: height2 + newY
-        }, this.diff);
+        }, this.changeTitle);
+        this.diff = height2 + newY;
+        this.handleDiffChange();
         return;
 
       }
     }
     this.setState({
       currentIndex: listHeight.length - 2,
-    });
+    }, this.changeTitle);
   }
 
-  diff = (newVal) => {
-    let fixedTop = (newVal > 0 && newVal < TITLE_HEIGHT) ? newVal - TITLE_HEIGHT : 0
-    if (this.fixedTop === fixedTop) {
-      return
+  changeTitle = () => {
+    const { data } = this.props;
+    const { currentIndex } = this.state;
+    if (this.scrollY > 0) {
+      this.setState({fixedTitle: ''});
+      return;
     }
-    this.fixedTop = fixedTop
-    this.fixed.style.transform = `translate3d(0,${fixedTop}px,0)`
+    const fixedTitle = data[currentIndex] ? data[currentIndex].title : '';
+    console.log(fixedTitle);
+    this.setState({fixedTitle});
+  }
+
+  handleDiffChange = () => {
+    const diff = this.diff;
+    let fixedTop = (diff > 0 && diff < TITLE_HEIGHT) ? diff - TITLE_HEIGHT : 0;
+    if (this.fixedTop === fixedTop) {
+      return;
+    }
+    this.fixedTop = fixedTop;
+    this.fixed.style.transform = `translate3d(0,${fixedTop}px,0)`;
   }
 
   _calculateHeight = () => {
     this.listHeight = [];
     const list = this.listGroup;
+
     let height = 0;
     this.listHeight.push(height);
     list.forEach((item, index) => {
+      height += item.clientHeight;
       this.listHeight.push(height);
     })
   }
@@ -122,9 +147,16 @@ class IndexList extends PureComponent {
     this.listView.scrollToElement(this.listGroup[index], 0)
   }
 
+  selectItem = (item) => {
+    const { onSelect } = this.props;
+
+    onSelect && onSelect(item);
+  }
+
   render() {
     const { data } = this.props;
     const { shortcutList, fixedTitle, currentIndex } = this.state;
+
     return (
       <Scroll
         className="listview"
@@ -137,32 +169,39 @@ class IndexList extends PureComponent {
         <ul>
           {
             data.map((group, index) => {
-              return <li className="list-group" ref={(listGroup) => this.listGroup = listGroup}>
+              return <li className="list-group" ref={(listGroup) => this.listGroup[index] = listGroup} key={index}>
                 <h2 className="list-group-title">{group.title}</h2>
                 <ul>
                   {
-                    group.items.map((item, key) => (<li className="list-group-item">
-                      <img src={item.avatar} alt="" className="avatar"/>
-                      <span className="name">{item.name}</span>
-                    </li>))
+                    group.items.map((item, key) => (
+                      <li className="list-group-item" key={key} onClick={this.selectItem(item)}>
+                        <img src={item.avatar} alt="" className="avatar"/>
+                        <span className="name">{item.name}</span>
+                      </li>
+                      )
+                    )
                   }
                 </ul>
               </li>
             })
           }
         </ul>
-        <div className="list-shortcut">
+        <div
+          className="list-shortcut"
+          onTouchStart={this.onShortcutTouchStart}
+          onTouchMove={this.onShortcutTouchMove}
+        >
           <ul>
             {
-              shortcutList.map((item, index) => <li className={classNames('item', {current: currentIndex === index})}>{item}</li>)
+              shortcutList.map((item, index) => <li key={item} className={classNames('item', {current: currentIndex === index})}>{item}</li>)
             }
           </ul>
         </div>
-        {
-          fixedTitle ? <div className="list-fixed" ref={(ref) => this.fixed = ref}>
-            <div className="fixed-title">{fixedTitle}</div>
-          </div> :null
-        }
+        <div className="list-fixed" ref={(ref) => this.fixed = ref}>
+          {
+            fixedTitle ? <div className="fixed-title">{fixedTitle}</div> : null
+          }
+        </div>
       </Scroll>
     );
   }
