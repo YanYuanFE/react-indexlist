@@ -23,6 +23,7 @@ class IndexList extends PureComponent {
       fixedTitle: '',
       shortcutList: props.data.map((group) => group.title.substr(0, 1)),
     }
+    console.log(props.data.map((group) => group.title.substr(0, 1)));
 
     this.diff = -1;
     this.scrollY = -1;
@@ -35,6 +36,7 @@ class IndexList extends PureComponent {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.data !== this.props.data) {
+      this.setState({shortcutList: nextProps.data.map((group) => group.title.substr(0, 1))})
       setTimeout(() => {
         this._calculateHeight();
       }, 20)
@@ -70,12 +72,12 @@ class IndexList extends PureComponent {
 
   scroll = (pos) => {
     this.scrollY = pos.y;
-    console.log(this.scrollY);
     this.handleScrollYChange(pos.y);
   }
 
   handleScrollYChange = (newY) => {
     const listHeight = this.listHeight;
+    const { currentIndex } = this.state;
 
     if (newY > 0) {
       this.setState({currentIndex: 0}, this.changeTitle);
@@ -86,9 +88,12 @@ class IndexList extends PureComponent {
       let height1 = listHeight[i];
       let height2 = listHeight[i + 1];
       if (-newY >= height1 && -newY < height2) {
-        this.setState({
-          currentIndex: i,
-        }, this.changeTitle);
+        console.log(this.state.currentIndex, i);
+        if (currentIndex !== i) {
+          this.setState({
+            currentIndex: i,
+          }, this.changeTitle);
+        }
         this.diff = height2 + newY;
         this.handleDiffChange();
         return;
@@ -156,6 +161,7 @@ class IndexList extends PureComponent {
   render() {
     const { data } = this.props;
     const { shortcutList, fixedTitle, currentIndex } = this.state;
+    console.log(fixedTitle);
 
     return (
       <Scroll
@@ -175,7 +181,10 @@ class IndexList extends PureComponent {
                   {
                     group.items.map((item, key) => (
                       <li className="list-group-item" key={key} onClick={this.selectItem(item)}>
-                        <img src={item.avatar} alt="" className="avatar"/>
+                        {
+                          item.avatar ?
+                            <img src={item.avatar} alt="" className="avatar"/> : null
+                        }
                         <span className="name">{item.name}</span>
                       </li>
                       )

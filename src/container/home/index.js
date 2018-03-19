@@ -4,6 +4,7 @@ import {
   Link
 } from 'react-router-dom';
 import Singer from './../singer';
+import City from './../city';
 import logo from '../../logo.svg';
 
 class Home extends Component {
@@ -18,7 +19,9 @@ class Home extends Component {
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
         <Link to="/singer">歌手</Link>
+        <Link to="/city">城市</Link>
         <Route path="/singer" component={Singer} />
+        <Route path="/city" component={City} />
       </div>
     );
   }
