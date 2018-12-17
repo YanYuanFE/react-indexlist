@@ -11,13 +11,14 @@ class Home extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">Welcome to React</h1>
+          <h1 className="App-title">Welcome to React IndexList</h1>
         </header>
         <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
+          <Link to="/singer">歌手Example</Link>
         </p>
-        <Link to="/singer">歌手</Link>
-        <Link to="/city">城市</Link>
+        <p className="App-intro">
+          <Link to="/city">城市Example</Link>
+        </p>
         <Route path="/singer" component={Singer} />
         <Route path="/city" component={City} />
       </div>
