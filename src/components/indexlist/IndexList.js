@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import Scroll from './scroll';
-import { getData } from "./utils";
-import "./index.scss";
+import Scroll from '../scroll/scroll';
+import { getData } from "../../utils/";
+import "./index.less";
 
 const TITLE_HEIGHT = 30;
 const ANCHOR_HEIGHT = 18;

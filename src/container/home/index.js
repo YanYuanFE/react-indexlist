@@ -5,14 +5,12 @@ import {
 } from 'react-router-dom';
 import Singer from './../singer';
 import City from './../city';
-import logo from '../../logo.svg';
 
 class Home extends Component {
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
         <p className="App-intro">
