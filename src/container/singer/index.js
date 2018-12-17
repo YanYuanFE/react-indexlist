@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {singers} from "../../data";
-import IndexList from '../../components/indexlist';
+import IndexList from '../../components/indexlist/IndexList';
 
 
 class Singer extends Component {
