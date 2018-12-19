@@ -56,7 +56,6 @@ module.exports = {
   resolve: {
     extensions: [".js", ".jsx"]
   },
-
   externals: {
     react: {
       root: "React",

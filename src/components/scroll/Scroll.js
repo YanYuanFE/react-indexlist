@@ -67,24 +67,24 @@ class Scroll extends PureComponent {
     }
   }
 
-  disable() {
+  disable = () => {
     this.scroll && this.scroll.disable();
   }
 
-  enable() {
+  enable = () => {
     this.scroll && this.scroll.enable();
   }
 
-  refresh() {
+  refresh = () => {
     this.scroll && this.scroll.refresh();
   }
 
-  scrollTo() {
-    this.scroll && this.scroll.scrollTo.apply(this.scroll, arguments);
+  scrollTo = (...args) => {
+    this.scroll && this.scroll.scrollTo.apply(this.scroll, args);
   }
 
-  scrollToElement() {
-    this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments);
+  scrollToElement = (...args) => {
+    this.scroll && this.scroll.scrollToElement.apply(this.scroll, args);
   }
 
   render() {
