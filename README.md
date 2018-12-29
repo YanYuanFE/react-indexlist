@@ -1,7 +1,7 @@
 # react-indexlist
 
 ### Description
-An indexList component of react based better-scroll。
+Indexlist component based better-scroll for react。
 
 ### Quick Start
 
