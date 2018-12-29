@@ -1,5 +1,9 @@
 {
-    "presets": ["@babel/react", "@babel/env"],
+    "presets": ["@babel/react", [
+      "@babel/env", {
+        "modules": false
+      }
+    ]],
     "plugins": [
       "react-hot-loader/babel",
       ["@babel/plugin-proposal-decorators", { "legacy": true }],

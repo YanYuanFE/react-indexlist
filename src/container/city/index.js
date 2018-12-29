@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { cities } from "../../data";
-import IndexList from '../../components/indexlist/IndexList';
+import IndexList from '../../components/indexlist';
 
 
 class City extends Component {
@@ -40,12 +40,16 @@ class City extends Component {
     return cityArr;
   }
 
+  handleSelect = (item) => {
+    console.log(item);
+  }
+
   render() {
     const { cityArr } = this.state;
     console.log(cityArr);
     return (
       <div className="scroll">
-        <IndexList data={cityArr}/>
+        <IndexList data={cityArr} onSelect={this.handleSelect} />
       </div>
     );
   }

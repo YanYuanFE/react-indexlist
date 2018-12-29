@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  BrowserRouter,
+  HashRouter,
   Route,
   Switch
 } from 'react-router-dom';
@@ -12,13 +12,13 @@ import Home from './container/home';
 class App extends Component {
   render() {
     return (
-      <BrowserRouter>
+      <HashRouter>
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/singer" component={Singer} />
           <Route path="/city" component={City} />
         </Switch>
-      </BrowserRouter>
+      </HashRouter>
     );
   }
 }
