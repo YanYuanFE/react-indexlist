@@ -1,5 +1,8 @@
 # react-indexlist
 
+[![](https://img.shields.io/npm/l/react-indexlist.svg?style=flat-square)](https://github.com/YanYuanFE/react-indexlist)
+[![](https://img.shields.io/npm/v/npm.svg?style=flat-square)](https://github.com/YanYuanFE/react-indexlist)
+
 ### Description
 Indexlist component based better-scroll for react。
 

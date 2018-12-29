@@ -1,6 +1,6 @@
 {
   "name": "react-indexlist",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "indexlist component based better-scroll for react",
   "keywords": [
     "react",
@@ -27,7 +27,7 @@
     "type": "git",
     "url": "https://github.com/YanYuanFE/react-indexlist.git"
   },
-  "licenses": "MIT",
+  "license": "MIT",
   "dependencies": {
     "better-scroll": "^1.13.2",
     "classnames": "^2.2.6"
