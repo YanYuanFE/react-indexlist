@@ -35,6 +35,9 @@ handleSelect = (item) => {
 
 ![indexlist](http://img.yanyuanfe.cn/indexlist2.png)
 
+![indexlist](http://img.yanyuanfe.cn/indexlist.gif)
+
+
 #### Prop types
 
 ``` js
