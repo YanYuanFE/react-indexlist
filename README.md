@@ -60,4 +60,6 @@ propTypes: {
 
 #### License
 
-MIT
+[MIT][mit-license]
+
+[mit-license]: ./LICENSE
