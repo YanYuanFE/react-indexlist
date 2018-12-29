@@ -23,7 +23,6 @@ class IndexList extends PureComponent {
       fixedTitle: '',
       shortcutList: props.data.map((group) => group.title.substr(0, 1)),
     }
-    console.log(props.data.map((group) => group.title.substr(0, 1)));
 
     this.diff = -1;
     this.scrollY = -1;
@@ -36,10 +35,9 @@ class IndexList extends PureComponent {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.data !== this.props.data) {
-      this.setState({shortcutList: nextProps.data.map((group) => group.title.substr(0, 1))})
-      setTimeout(() => {
-        this._calculateHeight();
-      }, 20)
+      this.setState({
+        shortcutList: nextProps.data.map((group) => group.title.substr(0, 1))
+      }, this._calculateHeight);
     }
   }
 
@@ -61,7 +59,7 @@ class IndexList extends PureComponent {
     let firstTouch = e.touches[0];
     this.touch.y2 = firstTouch.pageY;
     let delta = (this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT | 0;
-    let anchorIndex = parseInt(this.touch.anchorIndex) + delta;
+    let anchorIndex = parseInt(this.touch.anchorIndex, 10) + delta;
 
     this._scrollTo(anchorIndex);
   }
@@ -88,7 +86,6 @@ class IndexList extends PureComponent {
       let height1 = listHeight[i];
       let height2 = listHeight[i + 1];
       if (-newY >= height1 && -newY < height2) {
-        console.log(this.state.currentIndex, i);
         if (currentIndex !== i) {
           this.setState({
             currentIndex: i,
@@ -113,7 +110,6 @@ class IndexList extends PureComponent {
       return;
     }
     const fixedTitle = data[currentIndex] ? data[currentIndex].title : '';
-    console.log(fixedTitle);
     this.setState({fixedTitle});
   }
 
@@ -146,10 +142,11 @@ class IndexList extends PureComponent {
     if (index < 0) {
       index = 0;
     } else if (index > this.listHeight.length - 2) {
-      index = this.listHeight.length - 2
+      index = this.listHeight.length - 2;
     }
-    this.scrollY = -this.listHeight[index]
-    this.listView.scrollToElement(this.listGroup[index], 0)
+    this.scrollY = -this.listHeight[index];
+    this.handleScrollYChange(this.scrollY);
+    this.listView.scrollToElement(this.listGroup[index], 0);
   }
 
   selectItem = (item) => {
@@ -159,39 +156,38 @@ class IndexList extends PureComponent {
   }
 
   render() {
-    const { data } = this.props;
+    const { data, renderItem, className } = this.props;
     const { shortcutList, fixedTitle, currentIndex } = this.state;
-    console.log(fixedTitle);
 
     return (
       <Scroll
-        className="listview"
+        className={`listview ${className}`}
         data={data}
         probeType={this.probeType}
         listenScroll={this.listenScroll}
         handleScroll={this.scroll}
-        ref={(ref) => this.listview = ref}
+        ref={(ref) => this.listView = ref}
       >
         <ul>
           {
             data.map((group, index) => {
-              return <li className="list-group" ref={(listGroup) => this.listGroup[index] = listGroup} key={index}>
-                <h2 className="list-group-title">{group.title}</h2>
-                <ul>
-                  {
-                    group.items.map((item, key) => (
-                      <li className="list-group-item" key={key} onClick={this.selectItem(item)}>
-                        {
-                          item.avatar ?
-                            <img src={item.avatar} alt="" className="avatar"/> : null
-                        }
-                        <span className="name">{item.name}</span>
-                      </li>
+              return (
+                <li className="list-group" ref={(listGroup) => this.listGroup[index] = listGroup} key={index}>
+                  <h2 className="list-group-title">{group.title}</h2>
+                  <ul>
+                    {
+                      group.items.map((item, key) => (
+                        <li className="list-group-item" key={key} onClick={() => this.selectItem(item)}>
+                          {
+                            renderItem ? renderItem(item) : <span className="name">{item.name}</span>
+                          }
+                        </li>
+                        )
                       )
-                    )
-                  }
-                </ul>
-              </li>
+                    }
+                  </ul>
+                </li>
+              )
             })
           }
         </ul>
@@ -202,7 +198,7 @@ class IndexList extends PureComponent {
         >
           <ul>
             {
-              shortcutList.map((item, index) => <li key={item} className={classNames('item', {current: currentIndex === index})}>{item}</li>)
+              shortcutList.map((item, index) => <li key={item} data-index={index} className={classNames('item', {current: currentIndex === index})}>{item}</li>)
             }
           </ul>
         </div>

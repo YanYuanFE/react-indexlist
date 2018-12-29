@@ -22,9 +22,7 @@ class Scroll extends PureComponent {
     refreshDelay: PropTypes.number,
   };
   componentDidMount() {
-    setTimeout(() => {
-      this._initScroll();
-    }, 50);
+    this._initScroll();
   }
 
   componentWillReceiveProps(nextProps) {

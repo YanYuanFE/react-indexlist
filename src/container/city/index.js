@@ -40,12 +40,16 @@ class City extends Component {
     return cityArr;
   }
 
+  handleSelect = (item) => {
+    console.log(item);
+  }
+
   render() {
     const { cityArr } = this.state;
     console.log(cityArr);
     return (
       <div className="scroll">
-        <IndexList data={cityArr}/>
+        <IndexList data={cityArr} onSelect={this.handleSelect} />
       </div>
     );
   }

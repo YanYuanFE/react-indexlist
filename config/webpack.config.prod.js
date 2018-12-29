@@ -68,6 +68,18 @@ module.exports = {
       commonjs2: "react-dom",
       commonjs: "react-dom",
       amd: "react-dom"
+    },
+    "prop-types": {
+      root: "PropTypes",
+      commonjs2: "prop-types",
+      commonjs: "prop-types",
+      amd: "prop-types"
+    },
+    "better-scroll": {
+      root: "BScroll",
+      commonjs2: "better-scroll",
+      commonjs: "better-scroll",
+      amd: "better-scroll"
     }
   },
 

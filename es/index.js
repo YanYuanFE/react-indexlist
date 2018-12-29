@@ -263,31 +263,27 @@ function (_PureComponent) {
   createClass(Scroll, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this2 = this;
-
-      setTimeout(function () {
-        _this2._initScroll();
-      }, 50);
+      this._initScroll();
     }
   }, {
     key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(nextProps) {
-      var _this3 = this;
+      var _this2 = this;
 
       if (nextProps.data !== this.props.data) {
         setTimeout(function () {
-          _this3.refresh();
+          _this2.refresh();
         }, this.props.refreshDelay);
       }
     }
   }, {
     key: "render",
     value: function render() {
-      var _this4 = this;
+      var _this3 = this;
 
       return React.createElement("div", {
         ref: function ref(_ref) {
-          return _this4.wrapper = _ref;
+          return _this3.wrapper = _ref;
         },
         className: this.props.className
       }, this.props.children);
@@ -401,7 +397,7 @@ function (_PureComponent) {
       var firstTouch = e.touches[0];
       _this.touch.y2 = firstTouch.pageY;
       var delta = (_this.touch.y2 - _this.touch.y1) / ANCHOR_HEIGHT | 0;
-      var anchorIndex = parseInt(_this.touch.anchorIndex) + delta;
+      var anchorIndex = parseInt(_this.touch.anchorIndex, 10) + delta;
 
       _this._scrollTo(anchorIndex);
     };
@@ -433,8 +429,6 @@ function (_PureComponent) {
         var height2 = listHeight[i + 1];
 
         if (-newY >= height1 && -newY < height2) {
-          console.log(_this.state.currentIndex, i);
-
           if (currentIndex !== i) {
             _this.setState({
               currentIndex: i
@@ -467,7 +461,6 @@ function (_PureComponent) {
       }
 
       var fixedTitle = data[currentIndex] ? data[currentIndex].title : '';
-      console.log(fixedTitle);
 
       _this.setState({
         fixedTitle: fixedTitle
@@ -513,6 +506,8 @@ function (_PureComponent) {
 
       _this.scrollY = -_this.listHeight[index];
 
+      _this.handleScrollYChange(_this.scrollY);
+
       _this.listView.scrollToElement(_this.listGroup[index], 0);
     };
 
@@ -528,9 +523,6 @@ function (_PureComponent) {
         return group.title.substr(0, 1);
       })
     };
-    console.log(props.data.map(function (group) {
-      return group.title.substr(0, 1);
-    }));
     _this.diff = -1;
     _this.scrollY = -1;
     _this.probeType = 3;
@@ -544,17 +536,12 @@ function (_PureComponent) {
   createClass(IndexList, [{
     key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(nextProps) {
-      var _this2 = this;
-
       if (nextProps.data !== this.props.data) {
         this.setState({
           shortcutList: nextProps.data.map(function (group) {
             return group.title.substr(0, 1);
           })
-        });
-        setTimeout(function () {
-          _this2._calculateHeight();
-        }, 20);
+        }, this._calculateHeight);
       }
     }
   }, {
@@ -565,28 +552,30 @@ function (_PureComponent) {
   }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this2 = this;
 
-      var data = this.props.data;
+      var _this$props = this.props,
+          data = _this$props.data,
+          renderItem = _this$props.renderItem,
+          className = _this$props.className;
       var _this$state = this.state,
           shortcutList = _this$state.shortcutList,
           fixedTitle = _this$state.fixedTitle,
           currentIndex = _this$state.currentIndex;
-      console.log(fixedTitle);
       return React.createElement(_default, {
-        className: "listview",
+        className: "listview ".concat(className),
         data: data,
         probeType: this.probeType,
         listenScroll: this.listenScroll,
         handleScroll: this.scroll,
         ref: function ref(_ref2) {
-          return _this3.listview = _ref2;
+          return _this2.listView = _ref2;
         }
       }, React.createElement("ul", null, data.map(function (group, index) {
         return React.createElement("li", {
           className: "list-group",
           ref: function ref(listGroup) {
-            return _this3.listGroup[index] = listGroup;
+            return _this2.listGroup[index] = listGroup;
           },
           key: index
         }, React.createElement("h2", {
@@ -595,12 +584,10 @@ function (_PureComponent) {
           return React.createElement("li", {
             className: "list-group-item",
             key: key,
-            onClick: _this3.selectItem(item)
-          }, item.avatar ? React.createElement("img", {
-            src: item.avatar,
-            alt: "",
-            className: "avatar"
-          }) : null, React.createElement("span", {
+            onClick: function onClick() {
+              return _this2.selectItem(item);
+            }
+          }, renderItem ? renderItem(item) : React.createElement("span", {
             className: "name"
           }, item.name));
         })));
@@ -611,6 +598,7 @@ function (_PureComponent) {
       }, React.createElement("ul", null, shortcutList.map(function (item, index) {
         return React.createElement("li", {
           key: item,
+          "data-index": index,
           className: _classnames_2_2_6_classnames('item', {
             current: currentIndex === index
           })
@@ -618,7 +606,7 @@ function (_PureComponent) {
       }))), React.createElement("div", {
         className: "list-fixed",
         ref: function ref(_ref) {
-          return _this3.fixed = _ref;
+          return _this2.fixed = _ref;
         }
       }, fixedTitle ? React.createElement("div", {
         className: "fixed-title"

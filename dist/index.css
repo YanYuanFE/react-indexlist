@@ -3,7 +3,7 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: #ffffff;
+  background: #f2f4f5;
 }
 .listview .list-group {
   padding-bottom: 30px;
@@ -13,9 +13,10 @@
   line-height: 30px;
   padding-left: 20px;
   font-size: 16px;
-  color: #333;
+  color: #0d1a26;
   background: #FFF;
   text-align: left;
+  border-bottom: 1px solid #ebedf0;
 }
 .listview .list-group .list-group-item {
   display: flex;
@@ -30,7 +31,7 @@
 .listview .list-group .list-group-item .name {
   margin-left: 20px;
   color: #333;
-  font-size: 14px;
+  font-size: 16px;
 }
 .listview .list-shortcut {
   position: absolute;
@@ -44,16 +45,15 @@
   border-radius: 10px;
   text-align: center;
   background: #FFF;
-  font-family: Helvetica;
 }
 .listview .list-shortcut .item {
   padding: 3px;
   line-height: 1;
-  color: #333;
-  font-size: 16px;
+  color: #314659;
+  font-size: 14px;
 }
 .listview .list-shortcut .item.current {
-  color: #31c27c;
+  color: #1890ff;
 }
 .listview .list-fixed {
   position: absolute;
@@ -67,7 +67,7 @@
   line-height: 30px;
   padding-left: 20px;
   font-size: 16px;
-  color: #31c27c;
+  color: #1890ff;
   background: #FFF;
 }
 .listview .loading-container {
