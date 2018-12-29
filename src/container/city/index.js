@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { cities } from "../../data";
+import { cities } from '../../data';
 import IndexList from '../../components/indexlist';
 
 

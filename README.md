@@ -21,6 +21,7 @@ or yarn add react-indexlist
 
 ``` js
 import IndexList from 'react-indexlist';
+import 'react-indexlist/dist/index.css';
 ```
 
 ``` js

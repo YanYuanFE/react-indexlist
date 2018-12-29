@@ -24,8 +24,9 @@
   "rules": {
     "linebreak-style": [
       "error",
-      "unix"
+      "windows"
     ],
+    "quotes": [1, "single"],
     //"semi": ["error", "always"],
     "no-empty": 0,
     "comma-dangle": 0,

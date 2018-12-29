@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import {singers} from "../../data";
+import { singers } from '../../data';
 import IndexList from '../../components/indexlist';
 
 
