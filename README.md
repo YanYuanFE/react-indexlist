@@ -29,6 +29,12 @@ handleSelect = (item) => {
 <IndexList data={arr} onSelect={this.handleSelect} className="my-indexlist" />
 ```
 
+#### Example
+
+![indexlist](http://img.yanyuanfe.cn/indexlist1.png)
+
+![indexlist](http://img.yanyuanfe.cn/indexlist2.png)
+
 #### Prop types
 
 ``` js

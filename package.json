@@ -1,7 +1,7 @@
 {
   "name": "react-indexlist",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "react component indexlist better-scroll",
   "scripts": {
     "start": "webpack-dev-server --config config/webpack.config.dev.js --open --progress",
     "build": "webpack --config config/webpack.config.prod.js --colors --display-error-details --progress",
