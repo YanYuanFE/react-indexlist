@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { cities } from "../../data";
-import IndexList from '../../components/indexlist';
+import { cities } from '../../data';
+import IndexList from 'react-indexlist';
+import 'react-indexlist/dist/index.css';
 
 
 class City extends Component {
