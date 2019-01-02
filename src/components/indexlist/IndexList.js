@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import Scroll from '../scroll/scroll';
 import { getData } from '../../utils/index.js';
 import './index.less';
@@ -13,8 +12,9 @@ class IndexList extends PureComponent {
     data: [],
   };
   static propTypes = {
-    data: PropTypes.array,
+    data: PropTypes.array.isRequired,
     onSelect: PropTypes.func,
+    className: PropTypes.string,
   };
   constructor(props) {
     super(props);
@@ -198,7 +198,10 @@ class IndexList extends PureComponent {
         >
           <ul>
             {
-              shortcutList.map((item, index) => <li key={item} data-index={index} className={classNames('item', {current: currentIndex === index})}>{item}</li>)
+              shortcutList.map((item, index) => {
+                const ItemCls = currentIndex === index ? 'item current' : 'item';
+                return <li key={item} data-index={index} className={ItemCls}>{item}</li>;
+              })
             }
           </ul>
         </div>

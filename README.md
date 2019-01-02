@@ -29,7 +29,6 @@ handleSelect = (item) => {
     console.log(item);
 }
 
-
 <IndexList data={arr} onSelect={this.handleSelect} className="my-indexlist" />
 ```
 
@@ -47,17 +46,17 @@ handleSelect = (item) => {
 ``` js
 propTypes: {
 
-    // class of component
+    // className of component
     className: PropTypes.string,
 
     // Array of list
-    data: PropTypes.array.isRequired, // Default: []
+    data: PropTypes.array.isRequired, // Default: Array<{ title: string, items: array<{ name: string }> }>
 
-    // render item by self
-    renderItem: PropTypes.func,
+    // render item by self, return ReactNode
+    renderItem: PropTypes.func, // function (item)
 
     // onClick item callback
-    onSelect: PropTypes.func,
+    onSelect: PropTypes.func, // function (item)
 }
 
 ```

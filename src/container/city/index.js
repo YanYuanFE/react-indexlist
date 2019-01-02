@@ -49,7 +49,7 @@ class City extends Component {
     console.log(cityArr);
     return (
       <div className="scroll">
-        <IndexList data={cityArr} onSelect={this.handleSelect} />
+        <IndexList data={cityArr} onSelect={this.handleSelect} className="city-list" />
       </div>
     );
   }

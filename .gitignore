@@ -22,5 +22,5 @@ yarn-debug.log*
 yarn-error.log*
 
 # IDE specifics
-.idea
+.idea/
 

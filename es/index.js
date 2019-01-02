@@ -113,61 +113,6 @@ function _inherits(subClass, superClass) {
 
 var inherits = _inherits;
 
-var _classnames_2_2_6_classnames = createCommonjsModule(function (module) {
-/*!
-  Copyright (c) 2017 Jed Watson.
-  Licensed under the MIT License (MIT), see
-  http://jedwatson.github.io/classnames
-*/
-/* global define */
-
-(function () {
-
-	var hasOwn = {}.hasOwnProperty;
-
-	function classNames () {
-		var classes = [];
-
-		for (var i = 0; i < arguments.length; i++) {
-			var arg = arguments[i];
-			if (!arg) continue;
-
-			var argType = typeof arg;
-
-			if (argType === 'string' || argType === 'number') {
-				classes.push(arg);
-			} else if (Array.isArray(arg) && arg.length) {
-				var inner = classNames.apply(null, arg);
-				if (inner) {
-					classes.push(inner);
-				}
-			} else if (argType === 'object') {
-				for (var key in arg) {
-					if (hasOwn.call(arg, key) && arg[key]) {
-						classes.push(key);
-					}
-				}
-			}
-		}
-
-		return classes.join(' ');
-	}
-
-	if (module.exports) {
-		classNames.default = classNames;
-		module.exports = classNames;
-	} else {
-		window.classNames = classNames;
-	}
-}());
-});
-
-(function () {
-  var enterModule = require('react-hot-loader').enterModule;
-
-  enterModule && enterModule(module);
-})();
-
 var Scroll =
 /*#__PURE__*/
 function (_PureComponent) {
@@ -281,19 +226,15 @@ function (_PureComponent) {
     value: function render() {
       var _this3 = this;
 
+      var _this$props2 = this.props,
+          children = _this$props2.children,
+          className = _this$props2.className;
       return React.createElement("div", {
         ref: function ref(_ref) {
           return _this3.wrapper = _ref;
         },
-        className: this.props.className
-      }, this.props.children);
-    }
-  }, {
-    key: "__reactstandin__regenerateByEval",
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
+        className: className
+      }, children);
     }
   }]);
 
@@ -318,27 +259,6 @@ Scroll.propTypes = {
   beforeScroll: PropTypes.bool,
   refreshDelay: PropTypes.number
 };
-var _default = Scroll;
-
-(function () {
-  var reactHotLoader = require('react-hot-loader').default;
-
-  var leaveModule = require('react-hot-loader').leaveModule;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(Scroll, "Scroll", "E:\\Github\\react-indexlist\\src\\components\\scroll\\scroll.js");
-  reactHotLoader.register(_default, "default", "E:\\Github\\react-indexlist\\src\\components\\scroll\\scroll.js");
-  leaveModule(module);
-})();
-
-(function () {
-  var enterModule = require('react-hot-loader').enterModule;
-
-  enterModule && enterModule(module);
-})();
 
 var getData = function getData(el, name, val) {
   var prefix = 'data-';
@@ -350,24 +270,6 @@ var getData = function getData(el, name, val) {
   return el.getAttribute(prefix + name);
 };
 
-(function () {
-  var reactHotLoader = require('react-hot-loader').default;
-
-  var leaveModule = require('react-hot-loader').leaveModule;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(getData, "getData", "E:\\Github\\react-indexlist\\src\\utils\\index.js");
-  leaveModule(module);
-})();
-
-(function () {
-  var enterModule = require('react-hot-loader').enterModule;
-
-  enterModule && enterModule(module);
-})();
 var TITLE_HEIGHT = 30;
 var ANCHOR_HEIGHT = 18;
 
@@ -562,7 +464,7 @@ function (_PureComponent) {
           shortcutList = _this$state.shortcutList,
           fixedTitle = _this$state.fixedTitle,
           currentIndex = _this$state.currentIndex;
-      return React.createElement(_default, {
+      return React.createElement(Scroll, {
         className: "listview ".concat(className),
         data: data,
         probeType: this.probeType,
@@ -596,12 +498,11 @@ function (_PureComponent) {
         onTouchStart: this.onShortcutTouchStart,
         onTouchMove: this.onShortcutTouchMove
       }, React.createElement("ul", null, shortcutList.map(function (item, index) {
+        var ItemCls = currentIndex === index ? 'item current' : 'item';
         return React.createElement("li", {
           key: item,
           "data-index": index,
-          className: _classnames_2_2_6_classnames('item', {
-            current: currentIndex === index
-          })
+          className: ItemCls
         }, item);
       }))), React.createElement("div", {
         className: "list-fixed",
@@ -612,13 +513,6 @@ function (_PureComponent) {
         className: "fixed-title"
       }, fixedTitle) : null));
     }
-  }, {
-    key: "__reactstandin__regenerateByEval",
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
-    }
   }]);
 
   return IndexList;
@@ -628,45 +522,9 @@ IndexList.defaultProps = {
   data: []
 };
 IndexList.propTypes = {
-  data: PropTypes.array,
-  onSelect: PropTypes.func
+  data: PropTypes.array.isRequired,
+  onSelect: PropTypes.func,
+  className: PropTypes.string
 };
-var _default$1 = IndexList;
 
-(function () {
-  var reactHotLoader = require('react-hot-loader').default;
-
-  var leaveModule = require('react-hot-loader').leaveModule;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(TITLE_HEIGHT, "TITLE_HEIGHT", "E:\\Github\\react-indexlist\\src\\components\\indexlist\\IndexList.js");
-  reactHotLoader.register(ANCHOR_HEIGHT, "ANCHOR_HEIGHT", "E:\\Github\\react-indexlist\\src\\components\\indexlist\\IndexList.js");
-  reactHotLoader.register(IndexList, "IndexList", "E:\\Github\\react-indexlist\\src\\components\\indexlist\\IndexList.js");
-  reactHotLoader.register(_default$1, "default", "E:\\Github\\react-indexlist\\src\\components\\indexlist\\IndexList.js");
-  leaveModule(module);
-})();
-
-(function () {
-  var enterModule = require('react-hot-loader').enterModule;
-
-  enterModule && enterModule(module);
-})();
-var _default$2 = _default$1;
-
-(function () {
-  var reactHotLoader = require('react-hot-loader').default;
-
-  var leaveModule = require('react-hot-loader').leaveModule;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(_default$2, "default", "E:\\Github\\react-indexlist\\src\\components\\indexlist\\index.js");
-  leaveModule(module);
-})();
-
-export default _default$2;
+export default IndexList;
