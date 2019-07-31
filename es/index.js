@@ -113,6 +113,15 @@ function _inherits(subClass, superClass) {
 
 var inherits = _inherits;
 
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal["default"].signature : function (a) {
+  return a;
+};
+
 var Scroll =
 /*#__PURE__*/
 function (_PureComponent) {
@@ -152,7 +161,7 @@ function (_PureComponent) {
       });
 
       if (listenScroll) {
-        var me = assertThisInitialized(assertThisInitialized(_this));
+        var me = assertThisInitialized(_this);
 
         _this.scroll.on('scroll', function (pos) {
           handleScroll(pos);
@@ -236,6 +245,13 @@ function (_PureComponent) {
         className: className
       }, children);
     }
+  }, {
+    key: "__reactstandin__regenerateByEval",
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
   }]);
 
   return Scroll;
@@ -259,6 +275,32 @@ Scroll.propTypes = {
   beforeScroll: PropTypes.bool,
   refreshDelay: PropTypes.number
 };
+var _default = Scroll;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(Scroll, "Scroll", "/Users/rockontrol/Desktop/Develop/Dev/react-indexlist/src/components/scroll/scroll.js");
+  reactHotLoader.register(_default, "default", "/Users/rockontrol/Desktop/Develop/Dev/react-indexlist/src/components/scroll/scroll.js");
+})();
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();
+
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
+var __signature__$1 = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal["default"].signature : function (a) {
+  return a;
+};
 
 var getData = function getData(el, name, val) {
   var prefix = 'data-';
@@ -270,6 +312,29 @@ var getData = function getData(el, name, val) {
   return el.getAttribute(prefix + name);
 };
 
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(getData, "getData", "/Users/rockontrol/Desktop/Develop/Dev/react-indexlist/src/utils/index.js");
+})();
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();
+
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
+var __signature__$2 = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal["default"].signature : function (a) {
+  return a;
+};
 var TITLE_HEIGHT = 30;
 var ANCHOR_HEIGHT = 18;
 
@@ -389,6 +454,10 @@ function (_PureComponent) {
       _this.listHeight.push(height);
 
       list.forEach(function (item, index) {
+        if (!item) {
+          return;
+        }
+
         height += item.clientHeight;
 
         _this.listHeight.push(height);
@@ -464,7 +533,7 @@ function (_PureComponent) {
           shortcutList = _this$state.shortcutList,
           fixedTitle = _this$state.fixedTitle,
           currentIndex = _this$state.currentIndex;
-      return React.createElement(Scroll, {
+      return React.createElement(_default, {
         className: "listview ".concat(className),
         data: data,
         probeType: this.probeType,
@@ -513,6 +582,13 @@ function (_PureComponent) {
         className: "fixed-title"
       }, fixedTitle) : null));
     }
+  }, {
+    key: "__reactstandin__regenerateByEval",
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
   }]);
 
   return IndexList;
@@ -526,5 +602,49 @@ IndexList.propTypes = {
   onSelect: PropTypes.func,
   className: PropTypes.string
 };
+var _default$1 = IndexList;
 
-export default IndexList;
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(TITLE_HEIGHT, "TITLE_HEIGHT", "/Users/rockontrol/Desktop/Develop/Dev/react-indexlist/src/components/indexlist/IndexList.js");
+  reactHotLoader.register(ANCHOR_HEIGHT, "ANCHOR_HEIGHT", "/Users/rockontrol/Desktop/Develop/Dev/react-indexlist/src/components/indexlist/IndexList.js");
+  reactHotLoader.register(IndexList, "IndexList", "/Users/rockontrol/Desktop/Develop/Dev/react-indexlist/src/components/indexlist/IndexList.js");
+  reactHotLoader.register(_default$1, "default", "/Users/rockontrol/Desktop/Develop/Dev/react-indexlist/src/components/indexlist/IndexList.js");
+})();
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();
+
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
+var __signature__$3 = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal["default"].signature : function (a) {
+  return a;
+};
+var _default$2 = _default$1;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(_default$2, "default", "/Users/rockontrol/Desktop/Develop/Dev/react-indexlist/src/components/indexlist/index.js");
+})();
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();
+
+export default _default$2;

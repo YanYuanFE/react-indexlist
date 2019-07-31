@@ -38,8 +38,7 @@
   z-index: 30;
   right: 0;
   top: 50%;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   width: 20px;
   padding: 20px 0;
   border-radius: 10px;
@@ -74,6 +73,5 @@
   position: absolute;
   width: 100%;
   top: 50%;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }

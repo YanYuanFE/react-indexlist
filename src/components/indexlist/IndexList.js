@@ -130,6 +130,9 @@ class IndexList extends PureComponent {
     let height = 0;
     this.listHeight.push(height);
     list.forEach((item, index) => {
+      if (!item) {
+        return;
+      }
       height += item.clientHeight;
       this.listHeight.push(height);
     })
