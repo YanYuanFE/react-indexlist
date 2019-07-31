@@ -4,7 +4,7 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
-import { hot } from 'react-hot-loader';
+// import { hot } from 'react-hot-loader';
 import Singer from './container/singer';
 import City from './container/city';
 import Home from './container/home';
@@ -23,4 +23,4 @@ class App extends Component {
   }
 }
 
-export default hot(module)(App);
+export default App;

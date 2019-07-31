@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { singers, cities } from '../../data';
 import IndexList from '../../components/indexlist';
+// import IndexList from '../../../es/index';
 
 
 class Singer extends Component {
