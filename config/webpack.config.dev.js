@@ -64,20 +64,28 @@ module.exports = {
           {
             loader: "less-loader",
             options: {
-              strictMath: false,
-              noIeCompat: true,
-              javascriptEnabled: true,
+              lessOptions: {
+                strictMath: false,
+                noIeCompat: true,
+                javascriptEnabled: true,
+              }
             }
           }
         ]
       },
       {
         test: /\.(woff|woff2|eot|ttf)$/,
-        loader: 'url-loader?limit=1&name=fonts/[name].[hash:5].[ext]',
+        loader: 'url-loader',
+        options: {
+          name: 'fonts/[name].[hash:5].[ext]',
+        },
       },
       {
         test: /\.(png|jpg|jpeg|gif|svg)$/,
-        loader: "file-loader?name=images/[name].[hash:5].[ext]",
+        loader: "file-loader",
+        options: {
+          name: 'images/[name].[hash:5].[ext]',
+        },
       }
     ]
   },
@@ -85,9 +93,9 @@ module.exports = {
     contentBase: path.resolve(__dirname, "../dist"),
     hot: true,
     overlay: true,
+    port: 4000,
   },
   plugins: [
-    new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: resolve("public/index.html"),

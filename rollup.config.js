@@ -4,23 +4,25 @@ import postcss from 'rollup-plugin-postcss';
 import commonjs from 'rollup-plugin-commonjs';
 
 export default {
-    moduleName: 'ReactIndexList',
+    // moduleName: 'ReactIndexList',
     input: 'src/components/indexlist/index.js',
-    external: ['react', 'react-dom', 'prop-types', 'better-scroll'],
-    globals: {
-        react: 'React',
-        "react-dom": "ReactDOM",
-        "prop-types": "PropTypes",
-        "better-scroll": "BScroll"
-    },
+    external: ['react', 'react-dom', 'better-scroll'],
     output: [{
         name: 'IndexList',
         format: 'es',
-        file: 'es/index.js'
+        file: 'es/index.js',
+        globals: {
+            react: 'React',
+            "better-scroll": "BScroll"
+        },
     }, {
         name: 'IndexList',
         format: 'umd',
-        file: 'lib/index.js'
+        file: 'lib/index.js',
+        globals: {
+            react: 'React',
+            "better-scroll": "BScroll"
+        },
     }],
     plugins: [
         resolve(),

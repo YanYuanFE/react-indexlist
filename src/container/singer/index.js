@@ -1,17 +1,13 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { singers, cities } from '../../data';
-// import IndexList from '../../components/indexlist';
-import IndexList from '../../../es/index';
+import IndexList from '../../components/indexlist';
+// import IndexList from '../../../es/index';
 
 
-class Singer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      singers: singers
-    }
-  }
-  format = (cities) => {
+const Singer = () => {
+  const [data, setData] = useState(singers)
+
+  const format = (cities) => {
     let cityArr = [];
     let cacheTitle = [];
     let cityList = {};
@@ -33,20 +29,17 @@ class Singer extends Component {
     })
     return cityArr;
   }
-  render() {
-    const { singers } = this.state;
-    return (
-      <div className="scroll">
-        <IndexList
-          onSelect={() => {
-            const cityArr = this.format(cities.content.cities);
-            this.setState({singers: cityArr});
-          }}
-          data={singers} 
-          renderItem={(item) => <Fragment><img src={item.avatar} alt="" className="avatar"/><span className="name">{item.name}</span></Fragment>} />
-      </div>
-    );
-  }
+  return (
+    <div className="scroll">
+      <IndexList
+        onSelect={() => {
+          const cityArr = format(cities.content.cities);
+          setData(cityArr);
+        }}
+        data={data}
+        renderItem={(item) => <Fragment><img src={item.avatar} alt="" className="avatar"/><span className="name">{item.name}</span></Fragment>} />
+    </div>
+  );
 }
 
 export default Singer;

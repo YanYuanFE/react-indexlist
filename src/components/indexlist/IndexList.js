@@ -1,5 +1,4 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import React, { useRef, useEffect, useState } from 'react';
 import Scroll from '../scroll/scroll';
 import { getData } from '../../utils/index.js';
 import './index.less';
@@ -7,78 +6,65 @@ import './index.less';
 const TITLE_HEIGHT = 30;
 const ANCHOR_HEIGHT = 18;
 
-class IndexList extends PureComponent {
-  static defaultProps = {
-    data: [],
-  };
-  static propTypes = {
-    data: PropTypes.array.isRequired,
-    onSelect: PropTypes.func,
-    className: PropTypes.string,
-  };
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentIndex: 0,
-      fixedTitle: '',
-      shortcutList: props.data.map((group) => group.title.substr(0, 1)),
-    }
+const IndexList = ({data=[], onSelect, renderItem, className = ''}) => {
+  const [currentIndex, setIndex] = useState(0);
+  const [fixedTitle, setTitle] = useState('');
+  const [shortcutList, setList] = useState(() => data.map((group) => group.title.substr(0, 1)));
+  const listViewRef = useRef();
+  const fixedRef = useRef();
+  const probeType = 3;
+  const listenScroll = true;
+  const ctxRef = useRef({
+    touch: {},
+    listGroup: [],
+    listHeight: [],
+    scrollY: -1,
+    diff: -1,
+    fixedTop: 0,
+  });
 
-    this.diff = -1;
-    this.scrollY = -1;
-    this.probeType = 3;
-    this.listenScroll = true;
-    this.touch = {};
-    this.listHeight = [];
-    this.listGroup = [];
-  }
+  useEffect(() => {
+    setList(data.map((group) => group.title.substr(0, 1)));
+    _calculateHeight();
+  }, [data]);
 
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.data !== this.props.data) {
-      this.setState({
-        shortcutList: nextProps.data.map((group) => group.title.substr(0, 1))
-      }, this._calculateHeight);
-    }
-  }
+  useEffect(() => {
+    changeTitle();
+  }, [currentIndex]);
 
-  componentDidMount() {
-    this._calculateHeight();
-  }
-
-  onShortcutTouchStart = (e) => {
+  const onShortcutTouchStart = (e) => {
     let anchorIndex = getData(e.target, 'index');
     let firstTouch = e.touches[0];
-    this.touch.y1 = firstTouch.pageY;
-    this.touch.anchorIndex = anchorIndex;
+    ctxRef.current.touch.y1 = firstTouch.pageY;
+    ctxRef.current.touch.anchorIndex = anchorIndex;
 
-    this._scrollTo(anchorIndex);
+    _scrollTo(anchorIndex);
   }
 
-  onShortcutTouchMove = (e) => {
+  const onShortcutTouchMove = (e) => {
     e.preventDefault();
     let firstTouch = e.touches[0];
-    this.touch.y2 = firstTouch.pageY;
-    let delta = (this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT | 0;
-    let anchorIndex = parseInt(this.touch.anchorIndex, 10) + delta;
+    ctxRef.current.touch.y2 = firstTouch.pageY;
+    let delta = (ctxRef.current.touch.y2 - ctxRef.current.touch.y1) / ANCHOR_HEIGHT | 0;
+    let anchorIndex = parseInt(ctxRef.current.touch.anchorIndex, 10) + delta;
 
-    this._scrollTo(anchorIndex);
+    _scrollTo(anchorIndex);
   }
 
-  refresh = () => {
-    this.listView.refresh();
+  const refresh = () => {
+    listViewRef.current.refresh();
   }
 
-  scroll = (pos) => {
-    this.scrollY = pos.y;
-    this.handleScrollYChange(pos.y);
+  const onScroll = (pos) => {
+    ctxRef.current.scrollY = pos.y;
+    handleScrollYChange(pos.y);
   }
 
-  handleScrollYChange = (newY) => {
-    const listHeight = this.listHeight;
-    const { currentIndex } = this.state;
+  const handleScrollYChange = (newY) => {
+    const listHeight = ctxRef.current.listHeight;
 
     if (newY > 0) {
-      this.setState({currentIndex: 0}, this.changeTitle);
+      setIndex(0);
       return;
     }
 
@@ -87,135 +73,123 @@ class IndexList extends PureComponent {
       let height2 = listHeight[i + 1];
       if (-newY >= height1 && -newY < height2) {
         if (currentIndex !== i) {
-          this.setState({
-            currentIndex: i,
-          }, this.changeTitle);
+          setIndex(i);
         }
-        this.diff = height2 + newY;
-        this.handleDiffChange();
+        ctxRef.current.diff = height2 + newY;
+        handleDiffChange();
         return;
-
       }
     }
-    this.setState({
-      currentIndex: listHeight.length - 2,
-    }, this.changeTitle);
+    setIndex(listHeight.length - 2);
   }
 
-  changeTitle = () => {
-    const { data } = this.props;
-    const { currentIndex } = this.state;
-    if (this.scrollY > 0) {
-      this.setState({fixedTitle: ''});
+  const changeTitle = () => {
+    if (ctxRef.current.scrollY > 0) {
+      setTitle('');
       return;
     }
     const fixedTitle = data[currentIndex] ? data[currentIndex].title : '';
-    this.setState({fixedTitle});
+    setTitle(fixedTitle);
   }
 
-  handleDiffChange = () => {
-    const diff = this.diff;
+  const handleDiffChange = () => {
+    const diff = ctxRef.current.diff;
     let fixedTop = (diff > 0 && diff < TITLE_HEIGHT) ? diff - TITLE_HEIGHT : 0;
-    if (this.fixedTop === fixedTop) {
+    if (ctxRef.current.fixedTop === fixedTop) {
       return;
     }
-    this.fixedTop = fixedTop;
-    this.fixed.style.transform = `translate3d(0,${fixedTop}px,0)`;
+    ctxRef.current.fixedTop = fixedTop;
+    fixedRef.current.style.transform = `translate3d(0,${fixedTop}px,0)`;
   }
 
-  _calculateHeight = () => {
-    this.listHeight = [];
-    const list = this.listGroup;
+  const _calculateHeight = () => {
+    ctxRef.current.listHeight = [];
+    const list = ctxRef.current.listGroup;
 
     let height = 0;
-    this.listHeight.push(height);
+    const listHeight = [height];
     list.forEach((item, index) => {
       if (!item) {
         return;
       }
       height += item.clientHeight;
-      this.listHeight.push(height);
-    })
+      listHeight.push(height);
+    });
+    ctxRef.current.listHeight = listHeight;
   }
 
-  _scrollTo = (index) => {
+  const _scrollTo = (index) => {
+    const {listHeight, listGroup} = ctxRef.current;
     if (!index && index !== 0) {
       return;
     }
     if (index < 0) {
       index = 0;
-    } else if (index > this.listHeight.length - 2) {
-      index = this.listHeight.length - 2;
+    } else if (index > listHeight.length - 2) {
+      index = listHeight.length - 2;
     }
-    this.scrollY = -this.listHeight[index];
-    this.handleScrollYChange(this.scrollY);
-    this.listView.scrollToElement(this.listGroup[index], 0);
+    ctxRef.current.scrollY = -listHeight[index];
+    handleScrollYChange(ctxRef.current.scrollY);
+    listViewRef.current.scrollToElement(listGroup[index], 0);
   }
 
-  selectItem = (item) => {
-    const { onSelect } = this.props;
-
+  const selectItem = (item) => {
     onSelect && onSelect(item);
   }
 
-  render() {
-    const { data, renderItem, className } = this.props;
-    const { shortcutList, fixedTitle, currentIndex } = this.state;
-
-    return (
-      <Scroll
-        className={`listview ${className}`}
-        data={data}
-        probeType={this.probeType}
-        listenScroll={this.listenScroll}
-        handleScroll={this.scroll}
-        ref={(ref) => this.listView = ref}
+  return (
+    <Scroll
+      className={`listview ${className}`}
+      data={data}
+      probeType={probeType}
+      listenScroll={listenScroll}
+      handleScroll={onScroll}
+      ref={listViewRef}
+    >
+      <ul>
+        {
+          data.map((group, index) => {
+            return (
+              <li className="list-group" ref={(ele) => ctxRef.current.listGroup[index] = ele} key={index}>
+                <h2 className="list-group-title">{group.title}</h2>
+                <ul>
+                  {
+                    group.items.map((item, key) => (
+                      <li className="list-group-item" key={key} onClick={() => selectItem(item)}>
+                        {
+                          renderItem ? renderItem(item) : <span className="name">{item.name}</span>
+                        }
+                      </li>
+                      )
+                    )
+                  }
+                </ul>
+              </li>
+            )
+          })
+        }
+      </ul>
+      <div
+        className="list-shortcut"
+        onTouchStart={onShortcutTouchStart}
+        onTouchMove={onShortcutTouchMove}
       >
         <ul>
           {
-            data.map((group, index) => {
-              return (
-                <li className="list-group" ref={(listGroup) => this.listGroup[index] = listGroup} key={index}>
-                  <h2 className="list-group-title">{group.title}</h2>
-                  <ul>
-                    {
-                      group.items.map((item, key) => (
-                        <li className="list-group-item" key={key} onClick={() => this.selectItem(item)}>
-                          {
-                            renderItem ? renderItem(item) : <span className="name">{item.name}</span>
-                          }
-                        </li>
-                        )
-                      )
-                    }
-                  </ul>
-                </li>
-              )
+            shortcutList.map((item, index) => {
+              const ItemCls = currentIndex === index ? 'item current' : 'item';
+              return <li key={item} data-index={index} className={ItemCls}>{item}</li>;
             })
           }
         </ul>
-        <div
-          className="list-shortcut"
-          onTouchStart={this.onShortcutTouchStart}
-          onTouchMove={this.onShortcutTouchMove}
-        >
-          <ul>
-            {
-              shortcutList.map((item, index) => {
-                const ItemCls = currentIndex === index ? 'item current' : 'item';
-                return <li key={item} data-index={index} className={ItemCls}>{item}</li>;
-              })
-            }
-          </ul>
-        </div>
-        <div className="list-fixed" ref={(ref) => this.fixed = ref}>
-          {
-            fixedTitle ? <div className="fixed-title">{fixedTitle}</div> : null
-          }
-        </div>
-      </Scroll>
-    );
-  }
+      </div>
+      <div className="list-fixed" ref={fixedRef}>
+        {
+          fixedTitle ? <div className="fixed-title">{fixedTitle}</div> : null
+        }
+      </div>
+    </Scroll>
+  );
 }
 
 export default IndexList;

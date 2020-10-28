@@ -1,23 +1,17 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import { cities } from '../../data';
 import IndexList from '../../components/indexlist';
 
 
-class City extends Component {
-  constructor(props) {
-    super(props);
+const City = () => {
+  const [cityArr, setCityArr] = useState([]);
 
-    this.state = {
-      cityArr: []
-    }
-  }
+  useEffect(() => {
+    const cityArr = format(cities.content.cities);
+    setCityArr(cityArr);
+  }, []);
 
-  componentDidMount() {
-    const cityArr = this.format(cities.content.cities);
-    this.setState({cityArr});
-  }
-
-  format = (cities) => {
+  const format = (cities) => {
     let cityArr = [];
     let cacheTitle = [];
     let cityList = {};
@@ -40,19 +34,15 @@ class City extends Component {
     return cityArr;
   }
 
-  handleSelect = (item) => {
+  const handleSelect = (item) => {
     console.log(item);
   }
 
-  render() {
-    const { cityArr } = this.state;
-    console.log(cityArr);
-    return (
-      <div className="scroll">
-        <IndexList data={cityArr} onSelect={this.handleSelect} className="city-list" />
-      </div>
-    );
-  }
+  return (
+    <div className="scroll">
+      <IndexList data={cityArr} onSelect={this.handleSelect} className="city-list" />
+    </div>
+  );
 }
 
 export default City;
